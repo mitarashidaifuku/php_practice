@@ -1,13 +1,9 @@
 <?php
-const DSN = 'mysql:host=c248d86fe0a1;dbname=PHP_PRACTICE;charset=utf8';
-const USERNAME = 'MITARASHI';
-const PASSWORD = '1qazxsw2';
+require_once '../../config/db.php';
+require_once '../../model/Todo.php';
 
-$pdo = new PDO(DSN, USERNAME, PASSWORD);
-$stmh = $pdo->query('SELECT * FROM todos');
-
-$todo_list = $stmh->fetchAll(PDO::FETCH_ASSOC);
-// var_dump($todo_list);
+$query =
+$todo_list = Todo::findByQuery();
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +34,7 @@ $todo_list = $stmh->fetchAll(PDO::FETCH_ASSOC);
             </table>
         </ul>
         <?php else: ?>
-        s<div class="">データなし</div>
+        <div class="">データなし</div>
         <?php endif;?>
     </div>
 </body>
