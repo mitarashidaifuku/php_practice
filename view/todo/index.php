@@ -3,9 +3,9 @@ require_once '../../config/db.php';
 require_once '../../model/Todo.php';
 require_once '../../controller/TodoController.php';
 
-// $query = "SELECT * FROM todos WHERE user_id = 1";
+$query = "SELECT * FROM todos WHERE user_id = 1";
 // $todo_list = Todo::findByQuery($query);
-$todo_list = TodoController::index();
+$todo_list = TodoController::index("");
 ?>
 
 <!DOCTYPE html>
