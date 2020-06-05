@@ -1,12 +1,24 @@
 <?php
 
 class Todo{
-    public static function findByQuery(){
+    public static function findByQuery($query){
         $dbh = new PDO(DSN, USERNAME, PASSWORD);
-        $stmh = $dbh->query('SELECT * FROM todos WHERE user_id = 1');
+        $stmh = $dbh->query($query);
         if($stmh){
             $result = $stmh->fetchAll(PDO::FETCH_ASSOC);
         }else{
+            $result = [];
+        }
+        return $result;
+    }
+
+    public static function findAll(){
+        $dbh = new PDO(DSN, USERNAME, PASSWORD);
+        $query = "SELECT * FROM todos";
+        $stmh = $dbh->query($query);
+        if($stmh){
+            $result = $stmh->fetchAll(PDO::FETCH_ASSOC);
+        }else {
             $result = [];
         }
         return $result;
