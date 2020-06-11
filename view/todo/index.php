@@ -6,9 +6,10 @@ require_once '../../controller/TodoController.php';
 // $query = "SELECT * FROM todos WHERE user_id = 1";
 // $todo_list = Todo::findByQuery($query);
 $mode = $_GET['mode'];
-$todo_list = TodoController::index("");
+if($mode = "search"){
+    $todo_list = TodoController::index($mode);
+}
 ?>
-
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -21,7 +22,7 @@ $todo_list = TodoController::index("");
 <body>
     <form class="" action="index.php" method="GET">
         <input type="text" name="searchword">
-        <input type="hidden" name="mode" value="SEARCH">
+        <input type="hidden" name="mode" value="search">
         <input type="submit" value="検索">
     </form>
     <?php if(is_null($mode)): ?>
@@ -33,13 +34,21 @@ $todo_list = TodoController::index("");
                 <tr>
                     <th>user_id</th>
                     <th>title</th>
-                    <th>content</th>
+                    <th>CreateDate</th>
+                    <!-- <th>content</th> -->
                 </tr>
                 <?php foreach($todo_list as $todo): ?>
                     <tr>
-                        <td><?php echo $todo['user_id']; ?></td>
-                        <td><?php echo $todo['title']; ?></td>
-                        <td><?php echo $todo['content']; ?></td>
+                        <td>
+                            <a href="./detail.php?mode=detail&todo_id=<?php echo $todo['id']; ?>">
+                                <?php echo $todo['id']; ?>
+                            </a>
+                        </td>
+                        <td>
+                                <?php echo $todo['title']; ?>
+                        </td>
+                        <td><?php echo $todo['created_at']; ?></td>
+                        <!-- <td><?php echo $todo['content']; ?></td> -->
                     </tr>
                 <?php endforeach; ?>
             </table>

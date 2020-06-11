@@ -1,24 +1,36 @@
 <?php
 
 class TodoController{
-    public static function index(){
-        if(isset($_GET['searchword'])){
-            $searchword = $_GET['searchword'];
-            if($searchword !== ""){
-                $query = "SELECT * FROM todos WHERE title LIKE '%" .$searchword ."%'";
-                // echo $query;
-            }else{
-                $query = "";
-            }
+    public static function index($mode){
+        if($mode === "search"){
+            $query = TodoController::getSearchQuery();
+        }else if($mode === "detail"){
+            $query = TodoController::getDetailQuery();
         }
 
         if($query !== ""){
             $todo_list = Todo::findByQuery($query);
-            return $todo_list;
         }else{
             $todo_list = Todo::findAll();
-            return $todo_list;
         }
+        return $todo_list;
+    }
+
+    public static function getSearchQuery(){
+        if(isset($_GET['searchword'])){
+            $searchword = $_GET['searchword'];
+            if($searchword !== ""){
+                $query = "SELECT * FROM todos WHERE title LIKE '%" .$searchword ."%'";
+            }else{
+                $query = "";
+            }
+        }
+        return $query;
+    }
+    public static function getDetailQuery(){
+        $call_id = $_GET['todo_id'];
+        $query = "SELECT * FROM todos WHERE id =" .$call_id;
+        return $query;
     }
 }
 
