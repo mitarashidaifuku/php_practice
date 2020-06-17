@@ -23,5 +23,11 @@ class Todo{
         }
         return $result;
     }
+
+    public static function InsertQuery($query){
+        $dbh = new PDO(DSN, USERNAME, PASSWORD);
+        $stmh = $dbh->query($query);
+        return true;
+    }
 }
  ?>

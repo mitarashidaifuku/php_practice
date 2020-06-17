@@ -3,8 +3,14 @@ require_once '../../config/db.php';
 require_once '../../model/Todo.php';
 require_once '../../controller/TodoController.php';
 
-$todo_detail = TodoController::detail();
-?>
+if($_GET['title'] !== "" && $_GET['content'] !== ""){
+    $result = TodoController::newTodo();
+    if($result === true){
+        echo "新規追加しました！";
+    }
+}
+
+ ?>
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -12,31 +18,26 @@ $todo_detail = TodoController::detail();
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>詳細画面</title>
+        <title>Todo新規追加</title>
     </head>
     <body>
-        <table border=1>
-            <!-- <tr>
-                <th>タイトル</th>
-                <th>詳細</th>
-            </tr>
-            <tr> -->
-            <?php foreach($todo_detail as $detail): ?>
+        <h2>Todo新規追加</h2>
+        <form class="" action="new.php" method="GET">
+            <table>
                 <tr>
                     <th>タイトル</th>
                     <td>
-                        <p><? echo $detail['title']; ?></p>
+                        <input type="text" name="title" value="">
                     </td>
                 </tr>
                 <tr>
                     <th>詳細</th>
                     <td>
-                        <textarea cols="25" rows="2"><?php echo $detail['content']; ?></textarea>
+                        <textarea name="content" rows="5" cols="20"></textarea>
                     </td>
                 </tr>
-            <?php endforeach; ?>
-            </tr>
-        </table>
-        <!-- <input type="submit" value="更新"> -->
+            </table>
+            <input type="submit" value="追加">
+        </form>
     </body>
 </html>

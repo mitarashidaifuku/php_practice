@@ -6,7 +6,8 @@ require_once '../../controller/TodoController.php';
 // $query = "SELECT * FROM todos WHERE user_id = 1";
 // $todo_list = Todo::findByQuery($query);
 $mode = $_GET['mode'];
-if($mode = "search"){
+
+if($mode === "search"){
     $todo_list = TodoController::index($mode);
 }
 ?>
@@ -24,7 +25,9 @@ if($mode = "search"){
         <input type="text" name="searchword">
         <input type="hidden" name="mode" value="search">
         <input type="submit" value="検索">
+        <input type="button" value="新規登録" onclick="location.href='./new.php'">
     </form>
+    <hr>
     <?php if(is_null($mode)): ?>
         <div class="">検索してください。</div>
     <?php else: ?>
@@ -40,7 +43,7 @@ if($mode = "search"){
                 <?php foreach($todo_list as $todo): ?>
                     <tr>
                         <td>
-                            <a href="./detail.php?mode=detail&todo_id=<?php echo $todo['id']; ?>">
+                            <a href="./detail.php?id=<?php echo $todo['id']; ?>">
                                 <?php echo $todo['id']; ?>
                             </a>
                         </td>
