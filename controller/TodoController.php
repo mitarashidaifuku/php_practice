@@ -1,4 +1,5 @@
 <?php
+require_once '../../validation/TodoValidation.php';
 
 class TodoController{
     public static function index(){
@@ -17,10 +18,34 @@ class TodoController{
         return $todo_detail;
         }
 
-    public static function newTodo(){
-        $query = TodoController::getNewTodoQuery();
-        $Insert_todo = Todo::InsertQuery($query);
-        return $Insert_todo;
+    public static function new(){
+        $title = $_POST['title'];
+        $content = $_POST['content'];
+        // $query = TodoController::getNewTodoQuery();
+        $error_msg = "";
+        //タイトルに関するバリデーション
+        $bool = TodoValidation::blanckChckValidation($title);
+        if ($bool == false){
+            $error_msg = TodoController::addErrorMessage($error_msg, 1, "タイトル", "");
+
+        }
+        $bool = TodoValidation::wordLengthValidation($title, 50);
+        if ($bool === false){
+            $error_msg = TodoController::addErrorMessage($error_msg, 2, "タイトル", 50);
+        }
+        //詳細に関するバリデーション
+        $bool = TodoValidation::wordLengthValidation($content, 100);
+        if ($bool === false){
+            $error_msg = TodoController::addErrorMessage($error_msg, 2, "詳細", 100);
+        }
+        if($error_msg == ""){
+            $Insert_todo = Todo::InsertQuery($title, $content);
+            return $Insert_todo;
+        }else{
+            $error_msg = substr($error_msg, 1);
+            return $error_msg;
+        }
+
 
     }
 
@@ -42,12 +67,26 @@ class TodoController{
         return $query;
     }
 
-    public static function getNewTodoQuery(){
-        $title = $_GET['title'];
-        $content = $_GET['content'];
-        $query = "INSERT INTO todos(user_id, title, content, status, completed_at, created_at, updated_at, deleted_at)VALUES(1," .$title ."," .$content .",0 ,null, NOW(), null, null)";
-        return $query;
+    // addErrorMessage(他のエラメッセージ, エラータイプ, エラー項目, 字数)
+    public static function addErrorMessage($error_msg, $typeVal, $error_title, $str_Length){
+        // type1:入力チェック(入力してください)
+        // type2:字数制限チェック(XX文字以下で入力してください)
+        if($typeVal === 1){
+            $error_msg = $error_msg . "|" . $error_title ."：入力してください";
+        }
+        if($typeVal === 2){
+            $error_msg = $error_msg . "|" . $error_title ."：" .$str_Length ."文字以下で入力してください";
+         }
+         return $error_msg;
     }
+
+
+    // public static function getNewTodoQuery(){
+    //     $title = $_GET['title'];
+    //     $content = $_GET['content'];
+    //     $query = "INSERT INTO todos(user_id, title, content, status, completed_at, created_at, updated_at, deleted_at)VALUES(1," .$title ."," .$content .",0 ,null, NOW(), null, null)";
+    //     return $query;
+    // }
 }
 
 ?>
